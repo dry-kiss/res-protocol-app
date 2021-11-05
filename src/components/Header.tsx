@@ -1,18 +1,18 @@
-import { Center, Flex, HStack, StackProps } from "@chakra-ui/layout"
-import { faChartPie, faStore } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React from "react"
-import { useHistory, useLocation } from "react-router-dom"
-import { useWeb3Context } from "web3-react"
-import Button from "./Button"
-import { RusdGlyphGradient } from "./glyph/RusdGlyph"
-import AddressInfo from "./wallet/AddressInfo"
-import WalletInfo from "./wallet/WalletInfo"
+import { Center, Flex, HStack, StackProps } from "@chakra-ui/layout";
+import { faChartPie, faStore } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useWeb3Context } from "web3-react";
+import Button from "./Button";
+import { RusdGlyphGradient } from "./glyph/RusdGlyph";
+import AddressInfo from "./wallet/AddressInfo";
+import WalletInfo from "./wallet/WalletInfo";
 
 export const Header = () => {
-  const history = useHistory()
-  const location = useLocation()
-  const context = useWeb3Context()
+  const history = useHistory();
+  const location = useLocation();
+  const context = useWeb3Context();
 
   return (
     <Flex {...containerStyles}>
@@ -22,7 +22,7 @@ export const Header = () => {
         _hover={{ cursor: "pointer" }}
       />
       <HStack align="center" spacing={6}>
-        <Center w="120px">
+        {/* <Center w="120px">
           <Button
             variant="link"
             colorScheme="blue"
@@ -32,8 +32,8 @@ export const Header = () => {
           >
             Businesses
           </Button>
-        </Center>
-        <Center w="130px" pr={2}>
+        </Center> */}
+        {/* <Center w="130px" pr={2}>
           <Button
             variant="link"
             colorScheme="blue"
@@ -43,7 +43,7 @@ export const Header = () => {
           >
             Portfolio
           </Button>
-        </Center>
+        </Center> */}
         {context.library && (
           <>
             <WalletInfo />
@@ -52,10 +52,10 @@ export const Header = () => {
         )}
       </HStack>
     </Flex>
-  )
-}
+  );
+};
 
-export const headerHeight = 51
+export const headerHeight = 51;
 
 const containerStyles: StackProps = {
   px: { base: 4, md: 6 },
@@ -69,6 +69,6 @@ const containerStyles: StackProps = {
   position: "fixed",
   w: "100vw",
   zIndex: 1,
-}
+};
 
-export default Header
+export default Header;

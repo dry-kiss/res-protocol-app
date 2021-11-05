@@ -2373,7 +2373,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/react@npm:^1.6.6":
+"@chakra-ui/react@npm:^1.6.12":
   version: 1.6.12
   resolution: "@chakra-ui/react@npm:1.6.12"
   dependencies:
@@ -21849,7 +21849,7 @@ __metadata:
   resolution: "source-dapp@workspace:."
   dependencies:
     "@apollo/client": ^3.4.9
-    "@chakra-ui/react": ^1.6.6
+    "@chakra-ui/react": ^1.6.12
     "@emotion/react": ^11.4.1
     "@emotion/styled": ^11.3.0
     "@fortawesome/fontawesome-svg-core": ^1.2.35

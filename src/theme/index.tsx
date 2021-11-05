@@ -1,9 +1,9 @@
-import { ChakraProvider, extendTheme } from "@chakra-ui/react"
-import components from "./components"
-import foundations from "./foundations"
-import { styles as globalStyles } from "./styles"
-import { textStyles } from "./textStyles"
-import { layerStyles } from "./layerStyles"
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import components from "./components";
+import foundations from "./foundations";
+import { styles as globalStyles } from "./styles";
+import { textStyles } from "./textStyles";
+import { layerStyles } from "./layerStyles";
 
 const overrides: any = {
   ...foundations,
@@ -11,10 +11,16 @@ const overrides: any = {
   styles: globalStyles,
   textStyles,
   layerStyles,
-}
+  config: {
+    initialColorMode: "light",
+    useSystemColorMode: false,
+  },
+};
 
-const resourceTheme = extendTheme(overrides)
+export const resourceTheme = extendTheme(overrides);
 
 export const ThemeProvider = (props: any) => {
-  return <ChakraProvider theme={resourceTheme}>{props.children}</ChakraProvider>
-}
+  return (
+    <ChakraProvider theme={resourceTheme}>{props.children}</ChakraProvider>
+  );
+};
