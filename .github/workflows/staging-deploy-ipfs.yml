@@ -1,4 +1,4 @@
-name: "Source dApp - Deploy"
+name: "Source dApp - Deploy Staging"
 
 on:
   push:
