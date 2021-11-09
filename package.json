@@ -6,8 +6,8 @@
   "dependencies": {
     "@apollo/client": "^3.4.9",
     "@chakra-ui/react": "^1.6.12",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -22,7 +22,7 @@
     "dayjs": "^1.10.6",
     "ethers": "^5.4.5",
     "formik": "^2.2.9",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^4",
     "graphql": "^16.0.1",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
@@ -38,6 +38,9 @@
     "web-vitals": "^1.0.1",
     "web3-react": "^5.0.5",
     "yup": "^0.32.9"
+  },
+  "resolutions": {
+    "@chakra-ui/color-mode": "<1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
