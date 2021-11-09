@@ -13,7 +13,6 @@ import { useLoadReSourceTokenBalance } from "./services/web3/utils/useLoadReSour
 import Web3Provider from "./services/web3/Web3Provider";
 import { ThemeProvider } from "./theme";
 import "./theme/App.scss";
-import colors from "./theme/foundations/colors";
 
 function App() {
   return (
@@ -38,8 +37,6 @@ function App() {
 const AppLayout = () => {
   const canAccess = useAppGuard();
   const connectModal = useDisclosure();
-
-  console.log(colors);
 
   return (
     <>

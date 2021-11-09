@@ -21,7 +21,7 @@ import React, { useEffect, useState } from "react";
 import { useWeb3Context } from "web3-react";
 import celo from "../../assets/web3/celo-wallet-extension.svg";
 import ledger from "../../assets/web3/ledger.svg";
-import config from "../../config";
+import { config } from "../../config";
 import { useLoadReSourceTokenBalance } from "../../services/web3/utils/useLoadReSourceTokenBalance";
 import { getAbbreviatedAddress } from "../../utils/stringFormat";
 
@@ -129,6 +129,7 @@ const useConnectorErrorMessage = (setCallToAction) => {
   console.log(context);
 
   useEffect(() => {
+    console.log(context);
     setCallToAction(false);
     if (
       context.error?.message.includes("Unsupported Network") ||
@@ -142,7 +143,6 @@ const useConnectorErrorMessage = (setCallToAction) => {
       sourceTokenBalance &&
       sourceTokenBalance?.eq(0)
     ) {
-      console.log(sourceTokenBalance);
       setCallToAction(true);
     } else if (context.error?.message.includes("Ethereum account locked.")) {
       window.location.reload();
