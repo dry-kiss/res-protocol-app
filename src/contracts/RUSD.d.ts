@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
+import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface RUSDInterface extends ethers.utils.Interface {
   functions: {
@@ -266,54 +266,6 @@ interface RUSDInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RestrictionUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
-
-export type ApprovalEvent = TypedEvent<
-  [string, string, BigNumber] & {
-    owner: string;
-    spender: string;
-    value: BigNumber;
-  }
->;
-
-export type BalanceUpdateEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
-    sender: string;
-    recipient: string;
-    senderBalance: BigNumber;
-    senderCreditBalance: BigNumber;
-    recipientBalance: BigNumber;
-    recipientCreditBalance: BigNumber;
-  }
->;
-
-export type BulkBalanceUpdateEvent = TypedEvent<
-  [string, string[], BigNumber, BigNumber, BigNumber[], BigNumber[]] & {
-    sender: string;
-    recipients: string[];
-    senderBalance: BigNumber;
-    senderCreditBalance: BigNumber;
-    recipientBalances: BigNumber[];
-    recipientCreditBalances: BigNumber[];
-  }
->;
-
-export type CreditLimitUpdateEvent = TypedEvent<
-  [string, BigNumber] & { member: string; limit: BigNumber }
->;
-
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string] & { previousOwner: string; newOwner: string }
->;
-
-export type RestrictionExpirationUpdatedEvent = TypedEvent<
-  [BigNumber] & { restrictionRenewal: BigNumber }
->;
-
-export type RestrictionUpdatedEvent = TypedEvent<[number] & { state: number }>;
-
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
->;
 
 export class RUSD extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -764,15 +716,6 @@ export class RUSD extends BaseContract {
   };
 
   filters: {
-    "Approval(address,address,uint256)"(
-      owner?: string | null,
-      spender?: string | null,
-      value?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { owner: string; spender: string; value: BigNumber }
-    >;
-
     Approval(
       owner?: string | null,
       spender?: string | null,
@@ -780,25 +723,6 @@ export class RUSD extends BaseContract {
     ): TypedEventFilter<
       [string, string, BigNumber],
       { owner: string; spender: string; value: BigNumber }
-    >;
-
-    "BalanceUpdate(address,address,uint256,uint256,uint256,uint256)"(
-      sender?: null,
-      recipient?: null,
-      senderBalance?: null,
-      senderCreditBalance?: null,
-      recipientBalance?: null,
-      recipientCreditBalance?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber, BigNumber],
-      {
-        sender: string;
-        recipient: string;
-        senderBalance: BigNumber;
-        senderCreditBalance: BigNumber;
-        recipientBalance: BigNumber;
-        recipientCreditBalance: BigNumber;
-      }
     >;
 
     BalanceUpdate(
@@ -817,25 +741,6 @@ export class RUSD extends BaseContract {
         senderCreditBalance: BigNumber;
         recipientBalance: BigNumber;
         recipientCreditBalance: BigNumber;
-      }
-    >;
-
-    "BulkBalanceUpdate(address,address[],uint256,uint256,uint256[],uint256[])"(
-      sender?: null,
-      recipients?: null,
-      senderBalance?: null,
-      senderCreditBalance?: null,
-      recipientBalances?: null,
-      recipientCreditBalances?: null
-    ): TypedEventFilter<
-      [string, string[], BigNumber, BigNumber, BigNumber[], BigNumber[]],
-      {
-        sender: string;
-        recipients: string[];
-        senderBalance: BigNumber;
-        senderCreditBalance: BigNumber;
-        recipientBalances: BigNumber[];
-        recipientCreditBalances: BigNumber[];
       }
     >;
 
@@ -858,28 +763,12 @@ export class RUSD extends BaseContract {
       }
     >;
 
-    "CreditLimitUpdate(address,uint256)"(
-      member?: null,
-      limit?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { member: string; limit: BigNumber }
-    >;
-
     CreditLimitUpdate(
       member?: null,
       limit?: null
     ): TypedEventFilter<
       [string, BigNumber],
       { member: string; limit: BigNumber }
-    >;
-
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
     >;
 
     OwnershipTransferred(
@@ -890,30 +779,13 @@ export class RUSD extends BaseContract {
       { previousOwner: string; newOwner: string }
     >;
 
-    "RestrictionExpirationUpdated(uint256)"(
-      restrictionRenewal?: null
-    ): TypedEventFilter<[BigNumber], { restrictionRenewal: BigNumber }>;
-
     RestrictionExpirationUpdated(
       restrictionRenewal?: null
     ): TypedEventFilter<[BigNumber], { restrictionRenewal: BigNumber }>;
 
-    "RestrictionUpdated(uint8)"(
-      state?: BigNumberish | null
-    ): TypedEventFilter<[number], { state: number }>;
-
     RestrictionUpdated(
       state?: BigNumberish | null
     ): TypedEventFilter<[number], { state: number }>;
-
-    "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { from: string; to: string; value: BigNumber }
-    >;
 
     Transfer(
       from?: string | null,

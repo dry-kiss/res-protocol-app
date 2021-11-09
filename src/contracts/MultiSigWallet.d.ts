@@ -19,14 +19,11 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface IKeyMultiSigInterface extends ethers.utils.Interface {
+interface MultiSigWalletInterface extends ethers.utils.Interface {
   functions: {
     "MAX_OWNER_COUNT()": FunctionFragment;
-    "addClient(address)": FunctionFragment;
-    "addGuardian(address)": FunctionFragment;
+    "addOwner(address)": FunctionFragment;
     "changeRequirement(uint256)": FunctionFragment;
-    "clients(address)": FunctionFragment;
-    "coSigner()": FunctionFragment;
     "confirmTransactionByRelay(uint256,bytes,address)": FunctionFragment;
     "confirmations(uint256,address)": FunctionFragment;
     "executeTransactionByRelay(uint256,bytes,address)": FunctionFragment;
@@ -34,9 +31,10 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     "getConfirmations(uint256)": FunctionFragment;
     "getOwners()": FunctionFragment;
     "getTransactionCount(bool,bool)": FunctionFragment;
-    "guardians(address)": FunctionFragment;
-    "initialize(address[],address[],address,uint256)": FunctionFragment;
+    "getTransactionIds(uint256,uint256,bool,bool)": FunctionFragment;
+    "initialize(address[],uint256)": FunctionFragment;
     "isConfirmed(uint256)": FunctionFragment;
+    "isOwner(address)": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "owners(uint256)": FunctionFragment;
@@ -44,12 +42,9 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     "prepareExecuteTransaction(uint256,uint256)": FunctionFragment;
     "prepareRevokeConfirmation(uint256,uint256)": FunctionFragment;
     "prepareSubmitTransaction(address,uint256,bytes,uint256)": FunctionFragment;
-    "removeClient(address)": FunctionFragment;
-    "removeGuardian(address)": FunctionFragment;
+    "removeOwner(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "replaceClient(address,address)": FunctionFragment;
-    "replaceCoSigner(address)": FunctionFragment;
-    "replaceGuardian(address,address)": FunctionFragment;
+    "replaceOwner(address,address)": FunctionFragment;
     "required()": FunctionFragment;
     "revokeConfirmationByRelay(uint256,bytes,address)": FunctionFragment;
     "submitTransactionByRelay(address,uint256,bytes,bytes,address)": FunctionFragment;
@@ -62,14 +57,11 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     functionFragment: "MAX_OWNER_COUNT",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "addClient", values: [string]): string;
-  encodeFunctionData(functionFragment: "addGuardian", values: [string]): string;
+  encodeFunctionData(functionFragment: "addOwner", values: [string]): string;
   encodeFunctionData(
     functionFragment: "changeRequirement",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "clients", values: [string]): string;
-  encodeFunctionData(functionFragment: "coSigner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "confirmTransactionByRelay",
     values: [BigNumberish, BytesLike, string]
@@ -95,15 +87,19 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     functionFragment: "getTransactionCount",
     values: [boolean, boolean]
   ): string;
-  encodeFunctionData(functionFragment: "guardians", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getTransactionIds",
+    values: [BigNumberish, BigNumberish, boolean, boolean]
+  ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string[], string[], string, BigNumberish]
+    values: [string[], BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isConfirmed",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "isOwner", values: [string]): string;
   encodeFunctionData(functionFragment: "nonces", values: [string]): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -126,28 +122,13 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     functionFragment: "prepareSubmitTransaction",
     values: [string, BigNumberish, BytesLike, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "removeClient",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "removeGuardian",
-    values: [string]
-  ): string;
+  encodeFunctionData(functionFragment: "removeOwner", values: [string]): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "replaceClient",
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "replaceCoSigner",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "replaceGuardian",
+    functionFragment: "replaceOwner",
     values: [string, string]
   ): string;
   encodeFunctionData(functionFragment: "required", values?: undefined): string;
@@ -176,17 +157,11 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     functionFragment: "MAX_OWNER_COUNT",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addClient", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "addGuardian",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "addOwner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeRequirement",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "clients", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "coSigner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "confirmTransactionByRelay",
     data: BytesLike
@@ -212,12 +187,16 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     functionFragment: "getTransactionCount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "guardians", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTransactionIds",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isConfirmed",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owners", data: BytesLike): Result;
@@ -238,11 +217,7 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeClient",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "removeGuardian",
+    functionFragment: "removeOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -250,15 +225,7 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "replaceClient",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "replaceCoSigner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "replaceGuardian",
+    functionFragment: "replaceOwner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "required", data: BytesLike): Result;
@@ -284,35 +251,31 @@ interface IKeyMultiSigInterface extends ethers.utils.Interface {
   ): Result;
 
   events: {
-    "ClientAddition(address)": EventFragment;
-    "ClientRemoval(address)": EventFragment;
     "Confirmation(address,uint256)": EventFragment;
     "Deposit(address,uint256)": EventFragment;
     "Execution(uint256)": EventFragment;
     "ExecutionFailure(uint256)": EventFragment;
-    "GuardianAddition(address)": EventFragment;
-    "GuardianRemoval(address)": EventFragment;
+    "OwnerAddition(address)": EventFragment;
+    "OwnerRemoval(address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "RequirementChange(uint256)": EventFragment;
     "Revocation(address,uint256)": EventFragment;
     "Submission(uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ClientAddition"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ClientRemoval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Confirmation"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Execution"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutionFailure"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "GuardianAddition"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "GuardianRemoval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnerAddition"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnerRemoval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RequirementChange"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Revocation"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Submission"): EventFragment;
 }
 
-export class IKeyMultiSig extends BaseContract {
+export class MultiSigWallet extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -353,18 +316,13 @@ export class IKeyMultiSig extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: IKeyMultiSigInterface;
+  interface: MultiSigWalletInterface;
 
   functions: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    addClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    addGuardian(
-      guardian: string,
+    addOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -372,10 +330,6 @@ export class IKeyMultiSig extends BaseContract {
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    clients(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
-
-    coSigner(overrides?: CallOverrides): Promise<[string]>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
@@ -415,12 +369,16 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { count: BigNumber }>;
 
-    guardians(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+    getTransactionIds(
+      from: BigNumberish,
+      to: BigNumberish,
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { _transactionIds: BigNumber[] }>;
 
     initialize(
-      _clients: string[],
-      _guardians: string[],
-      _coSigner: string,
+      _owners: string[],
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -429,6 +387,8 @@ export class IKeyMultiSig extends BaseContract {
       transactionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    isOwner(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     nonces(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -462,13 +422,8 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    removeClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    removeGuardian(
-      guardian: string,
+    removeOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -476,20 +431,9 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    replaceClient(
-      client: string,
-      newClient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    replaceCoSigner(
-      newCoSigner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    replaceGuardian(
-      guardian: string,
-      newGuardian: string,
+    replaceOwner(
+      owner: string,
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -533,13 +477,8 @@ export class IKeyMultiSig extends BaseContract {
 
   MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<BigNumber>;
 
-  addClient(
-    client: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  addGuardian(
-    guardian: string,
+  addOwner(
+    owner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -547,10 +486,6 @@ export class IKeyMultiSig extends BaseContract {
     _required: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  clients(arg0: string, overrides?: CallOverrides): Promise<boolean>;
-
-  coSigner(overrides?: CallOverrides): Promise<string>;
 
   confirmTransactionByRelay(
     transactionId: BigNumberish,
@@ -590,12 +525,16 @@ export class IKeyMultiSig extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  guardians(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+  getTransactionIds(
+    from: BigNumberish,
+    to: BigNumberish,
+    pending: boolean,
+    executed: boolean,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
 
   initialize(
-    _clients: string[],
-    _guardians: string[],
-    _coSigner: string,
+    _owners: string[],
     _required: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -604,6 +543,8 @@ export class IKeyMultiSig extends BaseContract {
     transactionId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   nonces(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -637,13 +578,8 @@ export class IKeyMultiSig extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  removeClient(
-    client: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  removeGuardian(
-    guardian: string,
+  removeOwner(
+    owner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -651,20 +587,9 @@ export class IKeyMultiSig extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  replaceClient(
-    client: string,
-    newClient: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  replaceCoSigner(
-    newCoSigner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  replaceGuardian(
-    guardian: string,
-    newGuardian: string,
+  replaceOwner(
+    owner: string,
+    newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -708,18 +633,12 @@ export class IKeyMultiSig extends BaseContract {
   callStatic: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addClient(client: string, overrides?: CallOverrides): Promise<void>;
-
-    addGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
+    addOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
     changeRequirement(
       _required: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    clients(arg0: string, overrides?: CallOverrides): Promise<boolean>;
-
-    coSigner(overrides?: CallOverrides): Promise<string>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
@@ -759,12 +678,16 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    guardians(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+    getTransactionIds(
+      from: BigNumberish,
+      to: BigNumberish,
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     initialize(
-      _clients: string[],
-      _guardians: string[],
-      _coSigner: string,
+      _owners: string[],
       _required: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -773,6 +696,8 @@ export class IKeyMultiSig extends BaseContract {
       transactionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
     nonces(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -806,26 +731,13 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    removeClient(client: string, overrides?: CallOverrides): Promise<void>;
-
-    removeGuardian(guardian: string, overrides?: CallOverrides): Promise<void>;
+    removeOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    replaceClient(
-      client: string,
-      newClient: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    replaceCoSigner(
-      newCoSigner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    replaceGuardian(
-      guardian: string,
-      newGuardian: string,
+    replaceOwner(
+      owner: string,
+      newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -868,14 +780,6 @@ export class IKeyMultiSig extends BaseContract {
   };
 
   filters: {
-    ClientAddition(
-      client?: string | null
-    ): TypedEventFilter<[string], { client: string }>;
-
-    ClientRemoval(
-      client?: string | null
-    ): TypedEventFilter<[string], { client: string }>;
-
     Confirmation(
       sender?: string | null,
       transactionId?: BigNumberish | null
@@ -900,13 +804,13 @@ export class IKeyMultiSig extends BaseContract {
       transactionId?: BigNumberish | null
     ): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
 
-    GuardianAddition(
-      guardian?: string | null
-    ): TypedEventFilter<[string], { guardian: string }>;
+    OwnerAddition(
+      owner?: string | null
+    ): TypedEventFilter<[string], { owner: string }>;
 
-    GuardianRemoval(
-      guardian?: string | null
-    ): TypedEventFilter<[string], { guardian: string }>;
+    OwnerRemoval(
+      owner?: string | null
+    ): TypedEventFilter<[string], { owner: string }>;
 
     OwnershipTransferred(
       previousOwner?: string | null,
@@ -936,13 +840,8 @@ export class IKeyMultiSig extends BaseContract {
   estimateGas: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    addGuardian(
-      guardian: string,
+    addOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -950,10 +849,6 @@ export class IKeyMultiSig extends BaseContract {
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    clients(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    coSigner(overrides?: CallOverrides): Promise<BigNumber>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
@@ -993,12 +888,16 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    guardians(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getTransactionIds(
+      from: BigNumberish,
+      to: BigNumberish,
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     initialize(
-      _clients: string[],
-      _guardians: string[],
-      _coSigner: string,
+      _owners: string[],
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1007,6 +906,8 @@ export class IKeyMultiSig extends BaseContract {
       transactionId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    isOwner(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     nonces(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1040,13 +941,8 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    removeClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    removeGuardian(
-      guardian: string,
+    removeOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1054,20 +950,9 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    replaceClient(
-      client: string,
-      newClient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    replaceCoSigner(
-      newCoSigner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    replaceGuardian(
-      guardian: string,
-      newGuardian: string,
+    replaceOwner(
+      owner: string,
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1105,13 +990,8 @@ export class IKeyMultiSig extends BaseContract {
   populateTransaction: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    addClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    addGuardian(
-      guardian: string,
+    addOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1119,13 +999,6 @@ export class IKeyMultiSig extends BaseContract {
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    clients(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    coSigner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
@@ -1165,21 +1038,27 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    guardians(
-      arg0: string,
+    getTransactionIds(
+      from: BigNumberish,
+      to: BigNumberish,
+      pending: boolean,
+      executed: boolean,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _clients: string[],
-      _guardians: string[],
-      _coSigner: string,
+      _owners: string[],
       _required: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     isConfirmed(
       transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isOwner(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1221,13 +1100,8 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    removeClient(
-      client: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    removeGuardian(
-      guardian: string,
+    removeOwner(
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1235,20 +1109,9 @@ export class IKeyMultiSig extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    replaceClient(
-      client: string,
-      newClient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    replaceCoSigner(
-      newCoSigner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    replaceGuardian(
-      guardian: string,
-      newGuardian: string,
+    replaceOwner(
+      owner: string,
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

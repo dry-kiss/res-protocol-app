@@ -23,7 +23,7 @@
     "ethers": "^5.4.5",
     "formik": "^2.2.9",
     "framer-motion": "^4",
-    "graphql": "^16.0.1",
+    "graphql": "^14.0.2",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-countup": "^5.2.0",
