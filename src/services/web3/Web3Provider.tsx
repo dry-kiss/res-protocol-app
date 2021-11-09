@@ -3,6 +3,8 @@ import config from "../../config"
 
 const { InjectedConnector } = Connectors
 
+console.log(config.NETWORK_CHAIN_ID)
+
 const MetaMask = new InjectedConnector({
   supportedNetworks: [config.NETWORK_CHAIN_ID],
 })

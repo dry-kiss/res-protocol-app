@@ -14,42 +14,35 @@ import {
   Center,
   useDisclosure,
   Button,
-} from "@chakra-ui/react";
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { useWeb3Context } from "web3-react";
-import celo from "../../assets/web3/celo-wallet-extension.svg";
-import ledger from "../../assets/web3/ledger.svg";
-import { config } from "../../config";
-import { useLoadReSourceTokenBalance } from "../../services/web3/utils/useLoadReSourceTokenBalance";
-import { getAbbreviatedAddress } from "../../utils/stringFormat";
+} from "@chakra-ui/react"
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React, { useEffect, useState } from "react"
+import { useWeb3Context } from "web3-react"
+import celo from "../../assets/web3/celo-wallet-extension.svg"
+import ledger from "../../assets/web3/ledger.svg"
+import { config } from "../../config"
+import { useLoadReSourceTokenBalance } from "../../services/web3/utils/useLoadReSourceTokenBalance"
+import { getAbbreviatedAddress } from "../../utils/stringFormat"
 
-const metaMaskIcon =
-  "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png";
+const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
 const ConnectWalletModal = ({ isOpen, onClose }) => {
-  const callToActionModal = useDisclosure();
-  const context = useWeb3Context();
-  const [callToAction, setCallToAction] = useState(false);
-  const errorMessage = useConnectorErrorMessage(setCallToAction);
+  const callToActionModal = useDisclosure()
+  const context = useWeb3Context()
+  const [callToAction, setCallToAction] = useState(false)
+  const errorMessage = useConnectorErrorMessage(setCallToAction)
 
   useEffect(() => {
-    if (callToAction && isOpen && context.active) callToActionModal.onOpen();
-    else callToActionModal.onClose();
-  }, [callToAction, isOpen]);
+    if (callToAction && isOpen && context.active) callToActionModal.onOpen()
+    else callToActionModal.onClose()
+  }, [callToAction, isOpen])
 
-  const connect = () => context.setFirstValidConnector(["MetaMask"]);
+  const connect = () => context.setFirstValidConnector(["MetaMask"])
 
   return (
     <>
-      <Modal
-        size="sm"
-        closeOnOverlayClick={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-      >
+      <Modal size="sm" closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent m="1em">
           <ModalHeader>Connect your wallet</ModalHeader>
@@ -62,14 +55,11 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
                 justifyContent="space-between"
                 rightIcon={<Image width="2em" src={metaMaskIcon} />}
               >
-                {context.active
-                  ? getAbbreviatedAddress(context.account || "")
-                  : "Connect Wallet"}
+                {context.active ? getAbbreviatedAddress(context.account || "") : "Connect Wallet"}
               </Button>
             </VStack>
             <Text mt="2em">
-              Connect to a wallet holding SOURCE tokens to access staking and
-              underwriting
+              Connect to a wallet holding SOURCE tokens to access staking and underwriting
             </Text>
           </ModalBody>
           <ModalFooter>
@@ -79,16 +69,13 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <CallToActionModal
-        isOpen={callToActionModal.isOpen}
-        onClose={callToActionModal.onOpen}
-      />
+      <CallToActionModal isOpen={callToActionModal.isOpen} onClose={callToActionModal.onOpen} />
     </>
-  );
-};
+  )
+}
 
 const requestAddNetwork = async () => {
-  const _window = window as any;
+  const _window = window as any
   await _window.ethereum.request({
     method: "wallet_addEthereumChain",
 
@@ -106,11 +93,11 @@ const requestAddNetwork = async () => {
         iconUrls: ["future"],
       },
     ],
-  });
-};
+  })
+}
 
 const requestChangeAccount = async () => {
-  const _window = window as any;
+  const _window = window as any
   await _window.ethereum.request({
     method: "wallet_requestPermissions",
     params: [
@@ -118,59 +105,48 @@ const requestChangeAccount = async () => {
         eth_accounts: {},
       },
     ],
-  });
-};
+  })
+}
 
 const useConnectorErrorMessage = (setCallToAction) => {
-  const context = useWeb3Context();
-  const [message, setMessage] = useState("");
-  const sourceTokenBalance = useLoadReSourceTokenBalance();
-  console.log(sourceTokenBalance);
-  console.log(context);
+  const context = useWeb3Context()
+  const [message, setMessage] = useState("")
+  const sourceTokenBalance = useLoadReSourceTokenBalance()
+  console.log(context)
 
   useEffect(() => {
-    console.log(context);
-    setCallToAction(false);
+    if (!context) return
+    console.log(context)
+    setCallToAction(false)
     if (
       context.error?.message.includes("Unsupported Network") ||
-      context.error?.message.includes("Unable to set any valid connector") ||
-      context.error?.message.includes("Unsupported Network")
+      context.error?.message.includes("Unable to set any valid connector")
     ) {
-      console.log("requesting network change");
-      requestAddNetwork();
-    } else if (
-      context.account &&
-      sourceTokenBalance &&
-      sourceTokenBalance?.eq(0)
-    ) {
-      setCallToAction(true);
+      console.log("requesting network change")
+      requestAddNetwork()
+    } else if (context.account && sourceTokenBalance && sourceTokenBalance?.eq(0)) {
+      setCallToAction(true)
     } else if (context.error?.message.includes("Ethereum account locked.")) {
-      window.location.reload();
+      window.location.reload()
     } else {
-      setMessage("");
+      setMessage("")
     }
-  }, [context, sourceTokenBalance]);
+  }, [context, sourceTokenBalance])
 
-  return message;
-};
-export default ConnectWalletModal;
+  return message
+}
+export default ConnectWalletModal
 
 export const CallToActionModal = ({ isOpen, onClose }) => {
-  const context = useWeb3Context();
+  const context = useWeb3Context()
 
   const changeWallet = () => {
-    context.unsetConnector();
-    requestChangeAccount();
-  };
+    context.unsetConnector()
+    requestChangeAccount()
+  }
 
   return (
-    <Modal
-      size="sm"
-      closeOnOverlayClick={false}
-      isOpen={isOpen}
-      onClose={onClose}
-      isCentered
-    >
+    <Modal size="sm" closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent m="1em">
         <ModalHeader>
@@ -203,5 +179,5 @@ export const CallToActionModal = ({ isOpen, onClose }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
