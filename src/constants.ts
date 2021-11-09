@@ -2,7 +2,7 @@ export const NETWORKS = {
   localhost: {
     chainId: 31337,
     blockExplorer: "https://alfajores-forno.celo-testnet.org",
-    rpcUrl: "http://" + window.location.hostname + ":8545",
+    rpcUrl: "https://" + window.location.hostname + ":8545",
     currencySymbol: "CELO",
     currencyName: "Celo",
   },

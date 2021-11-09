@@ -1,7 +1,5 @@
 import {
-  Box,
   HStack,
-  IconButton,
   Image,
   Modal,
   ModalBody,
@@ -17,6 +15,7 @@ import {
 } from "@chakra-ui/react"
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
 import { useWeb3Context } from "web3-react"
 import celo from "../../assets/web3/celo-wallet-extension.svg"
@@ -81,7 +80,7 @@ const requestAddNetwork = async () => {
 
     params: [
       {
-        chainId: config.NETWORK_CHAIN_ID,
+        chainId: ethers.utils.parseUnits(config.NETWORK_CHAIN_ID.toString(), "wei")._hex,
         chainName: config.NETWORK_NAME,
         nativeCurrency: {
           name: config.NETWORK_CURRENCY_NAME,
@@ -112,17 +111,14 @@ const useConnectorErrorMessage = (setCallToAction) => {
   const context = useWeb3Context()
   const [message, setMessage] = useState("")
   const sourceTokenBalance = useLoadReSourceTokenBalance()
-  console.log(context)
 
   useEffect(() => {
     if (!context) return
-    console.log(context)
     setCallToAction(false)
     if (
       context.error?.message.includes("Unsupported Network") ||
       context.error?.message.includes("Unable to set any valid connector")
     ) {
-      console.log("requesting network change")
       requestAddNetwork()
     } else if (context.account && sourceTokenBalance && sourceTokenBalance?.eq(0)) {
       setCallToAction(true)
