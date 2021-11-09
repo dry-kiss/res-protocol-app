@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
+import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
 interface UnderwriteManagerInterface extends ethers.utils.Interface {
   functions: {
@@ -323,225 +323,6 @@ interface UnderwriteManagerInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "NewCreditLine"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
-
-export type CreditLineRewardEvent = TypedEvent<
-  [
-    [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      }
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-    }
-  ] & {
-    creditLine: [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      }
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-    };
-  }
->;
-
-export type CreditLineRewardClaimedEvent = TypedEvent<
-  [string, string[], BigNumber[], BigNumber] & {
-    underwriter: string;
-    counterparties: string[];
-    rewards: BigNumber[];
-    totalClaimed: BigNumber;
-  }
->;
-
-export type CreditLineWithdrawalEvent = TypedEvent<
-  [
-    [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    }
-  ] & {
-    creditLine: [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    };
-  }
->;
-
-export type ExtendCreditLineEvent = TypedEvent<
-  [
-    [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    },
-    BigNumber
-  ] & {
-    creditLine: [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    };
-    additionalCollateral: BigNumber;
-  }
->;
-
-export type NewCreditLineEvent = TypedEvent<
-  [
-    [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    }
-  ] & {
-    creditLine: [
-      string,
-      string,
-      [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      },
-      BigNumber
-    ] & {
-      underwriter: string;
-      counterparty: string;
-      data: [string, BigNumber, string, BigNumber, BigNumber] & {
-        underwriter: string;
-        collateral: BigNumber;
-        networkToken: string;
-        issueDate: BigNumber;
-        reward: BigNumber;
-      };
-      creditLimit: BigNumber;
-    };
-  }
->;
-
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string] & { previousOwner: string; newOwner: string }
->;
 
 export class UnderwriteManager extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1041,57 +822,6 @@ export class UnderwriteManager extends BaseContract {
   };
 
   filters: {
-    "CreditLineReward(tuple)"(
-      creditLine?: null
-    ): TypedEventFilter<
-      [
-        [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          }
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-        }
-      ],
-      {
-        creditLine: [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          }
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-        };
-      }
-    >;
-
     CreditLineReward(
       creditLine?: null
     ): TypedEventFilter<
@@ -1143,21 +873,6 @@ export class UnderwriteManager extends BaseContract {
       }
     >;
 
-    "CreditLineRewardClaimed(address,address[],uint256[],uint256)"(
-      underwriter?: null,
-      counterparties?: null,
-      rewards?: null,
-      totalClaimed?: null
-    ): TypedEventFilter<
-      [string, string[], BigNumber[], BigNumber],
-      {
-        underwriter: string;
-        counterparties: string[];
-        rewards: BigNumber[];
-        totalClaimed: BigNumber;
-      }
-    >;
-
     CreditLineRewardClaimed(
       underwriter?: null,
       counterparties?: null,
@@ -1170,61 +885,6 @@ export class UnderwriteManager extends BaseContract {
         counterparties: string[];
         rewards: BigNumber[];
         totalClaimed: BigNumber;
-      }
-    >;
-
-    "CreditLineWithdrawal(tuple)"(
-      creditLine?: null
-    ): TypedEventFilter<
-      [
-        [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        }
-      ],
-      {
-        creditLine: [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        };
       }
     >;
 
@@ -1280,64 +940,6 @@ export class UnderwriteManager extends BaseContract {
           };
           creditLimit: BigNumber;
         };
-      }
-    >;
-
-    "ExtendCreditLine(tuple,uint256)"(
-      creditLine?: null,
-      additionalCollateral?: null
-    ): TypedEventFilter<
-      [
-        [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        },
-        BigNumber
-      ],
-      {
-        creditLine: [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        };
-        additionalCollateral: BigNumber;
       }
     >;
 
@@ -1399,61 +1001,6 @@ export class UnderwriteManager extends BaseContract {
       }
     >;
 
-    "NewCreditLine(tuple)"(
-      creditLine?: null
-    ): TypedEventFilter<
-      [
-        [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        }
-      ],
-      {
-        creditLine: [
-          string,
-          string,
-          [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          },
-          BigNumber
-        ] & {
-          underwriter: string;
-          counterparty: string;
-          data: [string, BigNumber, string, BigNumber, BigNumber] & {
-            underwriter: string;
-            collateral: BigNumber;
-            networkToken: string;
-            issueDate: BigNumber;
-            reward: BigNumber;
-          };
-          creditLimit: BigNumber;
-        };
-      }
-    >;
-
     NewCreditLine(
       creditLine?: null
     ): TypedEventFilter<
@@ -1507,14 +1054,6 @@ export class UnderwriteManager extends BaseContract {
           creditLimit: BigNumber;
         };
       }
-    >;
-
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
     >;
 
     OwnershipTransferred(
