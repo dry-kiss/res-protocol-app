@@ -1,12 +1,5 @@
-import { VStack, HStack } from "@chakra-ui/layout";
-import {
-  Heading,
-  Image,
-  Center,
-  Button,
-  Container,
-  IconButton,
-} from "@chakra-ui/react";
+import { VStack, HStack } from "@chakra-ui/layout"
+import { Heading, Image, Center, Button, Container, IconButton } from "@chakra-ui/react"
 import {
   faDiscord,
   faFacebook,
@@ -15,26 +8,52 @@ import {
   faMedium,
   faTelegram,
   faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import homeImage from "../../../assets/home.svg";
+} from "@fortawesome/free-brands-svg-icons"
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import homeImage from "../../../assets/home.svg"
+import { CONTRACTS } from "../../../services/web3/constants"
+
+const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
 const HomePage = () => {
+  const requestAddToken = async () => {
+    const _window = window as any
+
+    await _window.ethereum.request({
+      method: "wallet_watchAsset",
+
+      params: {
+        type: "ERC20",
+        options: {
+          address: CONTRACTS.ReSourceToken,
+          symbol: "SOURCE",
+          decimals: 18,
+          image: "http://staging.resource.finance/favicon.ico",
+        },
+      },
+    })
+  }
+
   return (
     <Center h="100vh">
       <HStack w="80%" justifyContent="center">
         <VStack alignItems="flex-start" w="50%" maxW="420px">
           <Heading size="xl">Success!</Heading>
-          <Heading
-            size="subtitle"
-            color="gray"
-            mb="1em !important"
-            maxW="350px"
-          >
-            Congradulations on being a SOURCE holder, come back soon for
-            staking, underwriting, and more!
+          <Heading size="subtitle" color="gray" mb="1em !important" maxW="350px">
+            Congradulations on being a SOURCE holder, come back soon for staking, underwriting, and
+            more!
           </Heading>
+          <Button
+            size="lg"
+            colorScheme="blue"
+            justifyContent="space-between"
+            onClick={requestAddToken}
+            w="max-content"
+            rightIcon={<Image width="2em" src={metaMaskIcon} />}
+          >
+            Add SOURCE to wallet
+          </Button>
           <Button
             as={"a"}
             href={"https://resource.finance/"}
@@ -124,7 +143,7 @@ const HomePage = () => {
         </VStack>
       </HStack>
     </Center>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

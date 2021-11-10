@@ -13,6 +13,7 @@ import {
   useDisclosure,
   Button,
 } from "@chakra-ui/react"
+import muIcon from "../../assets/glyphs/mu-solid.svg"
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ethers } from "ethers"
@@ -21,6 +22,7 @@ import { useWeb3Context } from "web3-react"
 import celo from "../../assets/web3/celo-wallet-extension.svg"
 import ledger from "../../assets/web3/ledger.svg"
 import { config } from "../../config"
+import { CONTRACTS } from "../../services/web3/constants"
 import { useLoadReSourceTokenBalance } from "../../services/web3/utils/useLoadReSourceTokenBalance"
 import { getAbbreviatedAddress } from "../../utils/stringFormat"
 
@@ -37,7 +39,17 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
     else callToActionModal.onClose()
   }, [callToAction, isOpen])
 
-  const connect = () => context.setFirstValidConnector(["MetaMask"])
+  useEffect(() => {
+    connect()
+  }, [])
+
+  const connect = async () => {
+    Promise.all([requestAddNetwork(), context.setFirstValidConnector(["MetaMask"])]).then(
+      (values) => {
+        context.setFirstValidConnector(["MetaMask"])
+      },
+    )
+  }
 
   return (
     <>
@@ -49,7 +61,7 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
             <VStack align="stretch">
               <Button
                 size="lg"
-                onClick={connect}
+                onClick={async () => await connect()}
                 colorScheme="blue"
                 justifyContent="space-between"
                 rightIcon={<Image width="2em" src={metaMaskIcon} />}
@@ -75,6 +87,7 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
 
 const requestAddNetwork = async () => {
   const _window = window as any
+
   await _window.ethereum.request({
     method: "wallet_addEthereumChain",
 
@@ -114,12 +127,13 @@ const useConnectorErrorMessage = (setCallToAction) => {
 
   useEffect(() => {
     if (!context) return
+
     setCallToAction(false)
     if (
       context.error?.message.includes("Unsupported Network") ||
       context.error?.message.includes("Unable to set any valid connector")
     ) {
-      requestAddNetwork()
+      // requestAddNetworkandToken()
     } else if (context.account && sourceTokenBalance && sourceTokenBalance?.eq(0)) {
       setCallToAction(true)
     } else if (context.error?.message.includes("Ethereum account locked.")) {
