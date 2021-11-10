@@ -39,7 +39,7 @@ const HomePage = () => {
           >
             <Heading size="xl">Success!</Heading>
             <Heading size="subtitle" color="gray" mb="1em !important" maxW="350px">
-              Congradulations on being a SOURCE holder, come back soon for staking, underwriting,
+              Congratulations on being a SOURCE holder, come back soon for staking, underwriting,
               and more!
             </Heading>
             <Button
