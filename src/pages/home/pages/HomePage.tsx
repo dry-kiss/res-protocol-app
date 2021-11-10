@@ -22,10 +22,30 @@ import {
 import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import homeImage from "../../../assets/home.svg"
+import { CONTRACTS } from "../../../services/web3/constants"
+
+const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
 const HomePage = () => {
   const device = useBreakpointValue({ base: "mobile", md: "desktop" })
   const isMobile = device === "mobile"
+  const requestAddToken = async () => {
+    const _window = window as any
+
+    await _window.ethereum.request({
+      method: "wallet_watchAsset",
+
+      params: {
+        type: "ERC20",
+        options: {
+          address: CONTRACTS.ReSourceToken,
+          symbol: "SOURCE",
+          decimals: 18,
+          image: "http://staging.resource.finance/favicon.ico",
+        },
+      },
+    })
+  }
 
   return (
     <Center h="100vh">
@@ -52,6 +72,16 @@ const HomePage = () => {
               rightIcon={<FontAwesomeIcon icon={faBookOpen} />}
             >
               Learn More
+            </Button>
+            <Button
+              size="lg"
+              colorScheme="blue"
+              justifyContent="space-between"
+              onClick={requestAddToken}
+              w="max-content"
+              rightIcon={<Image width="2em" src={metaMaskIcon} />}
+            >
+              Add SOURCE to wallet
             </Button>
             <Wrap w="100%" justifyContent="space-between" mt="1em !important">
               <WrapItem>
