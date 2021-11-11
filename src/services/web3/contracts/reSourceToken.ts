@@ -28,6 +28,9 @@ export const useReSourceTokenContract = () => {
     balanceOf: async () => {
       return contract.connect(signer).balanceOf(await signer.getAddress())
     },
+    lockedBalanceOf: async () => {
+      return (await contract.connect(signer).locks(await signer.getAddress())).totalAmount
+    },
   }
 }
 

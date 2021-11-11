@@ -23,12 +23,14 @@ import { faBookOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import homeImage from "../../../assets/home.svg"
 import { CONTRACTS } from "../../../services/web3/constants"
+import { gradients } from "../../../theme/foundations/colors"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
 const HomePage = () => {
   const device = useBreakpointValue({ base: "mobile", md: "desktop" })
   const isMobile = device === "mobile"
+  console.log(gradients.blue)
   const requestAddToken = async () => {
     const _window = window as any
 
@@ -68,6 +70,7 @@ const HomePage = () => {
               target={"_blank"}
               size="lg"
               colorScheme="blue"
+              variant="outline"
               justifyContent="space-between"
               rightIcon={<FontAwesomeIcon icon={faBookOpen} />}
             >
@@ -75,7 +78,8 @@ const HomePage = () => {
             </Button>
             <Button
               size="lg"
-              colorScheme="blue"
+              // colorScheme={gradients.blue}
+              background={gradients.blue}
               justifyContent="space-between"
               onClick={requestAddToken}
               w="max-content"
