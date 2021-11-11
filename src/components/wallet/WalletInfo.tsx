@@ -1,13 +1,14 @@
-import { Box, BoxProps } from "@chakra-ui/layout"
-import { Center, HStack, Tooltip } from "@chakra-ui/react"
+import { Box, BoxProps, Text } from "@chakra-ui/layout"
+import { Center, chakra, HStack, Tooltip } from "@chakra-ui/react"
+import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
-import { useGetUnderwriterWalletInfoQuery } from "../../generated/subgraph/graphql"
 import { useReSourceTokenContract } from "../../services/web3/contracts"
-import { useGetMyWalletAddress } from "../../services/web3/utils/useGetMyWalletAddress"
 import colors from "../../theme/foundations/colors"
+import { textStyles } from "../../theme/textStyles"
 import { useManagedCountUp } from "../../utils/useManagedCountUp"
 import { GlyphLabel } from "../glyph/SourceGlyphLabel"
+import Icon from "../Icon"
 
 const BALANCE_REF = "BALANCE_REF"
 const COLLATERAL_REF = "COLLATERAL_REF"
@@ -36,19 +37,18 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
   return (
     <Box {...rest}>
       <HStack spacing={-14}>
-        {/* <Tooltip label="Staked SOURCE" shouldWrapChildren>
-          <Center
-            {...pillContainerStyles}
-            pr="60px"
-            left={0}
-            borderColor={colors.blue.main}
-          >
-            <GlyphLabel id={COLLATERAL_REF} color={colors.blue.main} mx={1} />
-          </Center>
-        </Tooltip> */}
         <Tooltip label="Locked SOURCE balance" shouldWrapChildren>
-          <Center {...pillContainerStyles} pr="60px" left={0} borderColor={colors.blue.main}>
-            <GlyphLabel id={LOCKED_REF} color={colors.blue.main} mx={1} />
+          <Center {...pillContainerStyles} pr="60px" left={0} borderColor={colors.gray[700]}>
+            <Box mx={1}>
+              <Text variant="number" mx={2} id={LOCKED_REF} display="inline"></Text>
+              <Icon
+                size="xs"
+                icon={faLock}
+                display="inline"
+                alignSelf="center"
+                color={colors.gray[700]}
+              />
+            </Box>
           </Center>
         </Tooltip>
         <Tooltip label="Total SOURCE balance" shouldWrapChildren>
