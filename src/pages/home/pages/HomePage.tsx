@@ -43,7 +43,7 @@ const HomePage = () => {
           address: CONTRACTS.SourceToken,
           symbol: "SOURCE",
           decimals: 18,
-          image: "http://staging.resource.finance/favicon.ico",
+          image: `${window.location.origin}/favicon.ico`,
         },
       },
     })
