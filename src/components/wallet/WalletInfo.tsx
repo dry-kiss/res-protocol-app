@@ -1,17 +1,15 @@
 import { Box, BoxProps, Text } from "@chakra-ui/layout"
-import { Center, chakra, HStack, Tooltip } from "@chakra-ui/react"
+import { Center, HStack, Tooltip } from "@chakra-ui/react"
 import { faLock } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
 import { useReSourceTokenContract } from "../../services/web3/contracts"
 import colors from "../../theme/foundations/colors"
-import { textStyles } from "../../theme/textStyles"
 import { useManagedCountUp } from "../../utils/useManagedCountUp"
 import { GlyphLabel } from "../glyph/SourceGlyphLabel"
-import Icon from "../Icon"
 
 const BALANCE_REF = "BALANCE_REF"
-const COLLATERAL_REF = "COLLATERAL_REF"
 const LOCKED_REF = "LOCKED_REF"
 
 const WalletInfo = ({ ...rest }: BoxProps) => {
@@ -40,14 +38,8 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
         <Tooltip label="Locked SOURCE" shouldWrapChildren>
           <Center {...pillContainerStyles} pr="60px" left={0} borderColor={colors.gray[700]}>
             <Box mx={1}>
-              <Text variant="number" mx={2} id={LOCKED_REF} display="inline"></Text>
-              <Icon
-                size="xs"
-                icon={faLock}
-                display="inline"
-                alignSelf="center"
-                color={colors.gray[700]}
-              />
+              <Text id={LOCKED_REF} variant="number" mx={2} display="inline" />
+              <FontAwesomeIcon icon={faLock} size="sm" color={colors.gray[700]} />
             </Box>
           </Center>
         </Tooltip>
