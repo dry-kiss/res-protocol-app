@@ -32,11 +32,20 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
     end: Number(ethers.utils.formatEther(locked)),
   })
 
+  const showLock = Number(ethers.utils.formatEther(locked)) > 0
+  console.log(showLock)
+
   return (
     <Box {...rest}>
       <HStack spacing={-14}>
-        <Tooltip label="Locked SOURCE" shouldWrapChildren>
-          <Center {...pillContainerStyles} pr="60px" left={0} borderColor={colors.gray[700]}>
+        <Tooltip display={showLock ? "" : "none"} label="Locked SOURCE" shouldWrapChildren>
+          <Center
+            display={showLock ? "" : "none"}
+            {...pillContainerStyles}
+            pr="60px"
+            left={0}
+            borderColor={colors.gray[700]}
+          >
             <Box mx={1}>
               <Text id={LOCKED_REF} variant="number" mx={2} display="inline" />
               <FontAwesomeIcon icon={faLock} size="sm" color={colors.gray[700]} />
