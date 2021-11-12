@@ -30,7 +30,7 @@ const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-27284
 const HomePage = () => {
   const device = useBreakpointValue({ base: "mobile", md: "desktop" })
   const isMobile = device === "mobile"
-  console.log(gradients.blue)
+
   const requestAddToken = async () => {
     const _window = window as any
 
@@ -40,7 +40,7 @@ const HomePage = () => {
       params: {
         type: "ERC20",
         options: {
-          address: CONTRACTS.ReSourceToken,
+          address: CONTRACTS.SourceToken,
           symbol: "SOURCE",
           decimals: 18,
           image: "http://staging.resource.finance/favicon.ico",
@@ -69,7 +69,7 @@ const HomePage = () => {
               href={"https://resource.finance/"}
               target={"_blank"}
               size="lg"
-              colorScheme="blue"
+              colorScheme="primary"
               variant="outline"
               justifyContent="space-between"
               rightIcon={<FontAwesomeIcon icon={faBookOpen} />}
@@ -78,8 +78,7 @@ const HomePage = () => {
             </Button>
             <Button
               size="lg"
-              // colorScheme={gradients.blue}
-              background={gradients.blue}
+              background={gradients.primary}
               justifyContent="space-between"
               onClick={requestAddToken}
               w="max-content"
@@ -94,7 +93,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://t.me/theresourcenetwork"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Telegram"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faTelegram} />}
@@ -106,7 +105,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://discord.com/invite/UuTCRuuZMP"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Discord"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faDiscord} />}
@@ -118,7 +117,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://twitter.com/resourcemutual"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Twitter"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faTwitter} />}
@@ -130,7 +129,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://www.facebook.com/resourcenetwork1"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Facebook"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faFacebook} />}
@@ -142,7 +141,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://www.linkedin.com/company/resourcenetwork/"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Linkedin"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faLinkedin} />}
@@ -154,7 +153,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://github.com/ReSource-Network/"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Github"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faGithub} />}
@@ -166,7 +165,7 @@ const HomePage = () => {
                   as={"a"}
                   href={"https://re-source.medium.com/"}
                   target={"_blank"}
-                  colorScheme="blue"
+                  colorScheme="primary"
                   aria-label="Medium"
                   size="lg"
                   icon={<FontAwesomeIcon icon={faMedium} />}

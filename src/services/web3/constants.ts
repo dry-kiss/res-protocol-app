@@ -1,7 +1,5 @@
-import * as config from "../../contracts/artifacts.json"
+import { config } from "../../config"
 
 export const CONTRACTS = {
-  UnderwriteManager: config.UnderwriteManager,
-  ReSourceToken: config.ReSourceToken,
-  RUSDToken: config.RUSD,
+  SourceToken: config.SOURCE_ADDRESS,
 }

@@ -37,7 +37,7 @@ const footerStyles: BoxProps = {
   py: { base: 2, md: 3 },
   justifyContent: "space-between",
   borderTop: "solid 1px",
-  borderColor: "blue.main",
+  borderColor: "primary.main",
   bgColor: "white !important",
   height: footerHeight,
   bottom: 0,

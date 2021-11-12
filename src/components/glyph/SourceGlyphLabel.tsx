@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/layout"
 import { chakra, ChakraProps } from "@chakra-ui/system"
 import colors from "../../theme/foundations/colors"
-import { SourceGlyph, SourceGlyphSolid } from "./SourceGlyph"
+import { SourceGlyph } from "./SourceGlyph"
 
 export interface GlyphLabelProps extends ChakraProps {
   value?: number | null | string
@@ -23,7 +23,7 @@ const Glyph = (props: GlyphLabelProps) => {
   return props.color === colors.blue.main ? (
     <SourceGlyph boxSize="12px" display="initial" {...(props as any)} />
   ) : (
-    <SourceGlyphSolid boxSize="12px" display="initial" {...(props as any)} />
+    <SourceGlyph boxSize="18px" display="initial" {...(props as any)} />
   )
 }
 

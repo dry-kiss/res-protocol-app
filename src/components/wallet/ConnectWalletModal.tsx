@@ -25,6 +25,7 @@ import { config } from "../../config"
 import { CONTRACTS } from "../../services/web3/constants"
 import { useLoadReSourceTokenBalance } from "../../services/web3/utils/useLoadReSourceTokenBalance"
 import { getAbbreviatedAddress } from "../../utils/stringFormat"
+import { gradients } from "../../theme/foundations/colors"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
@@ -62,7 +63,7 @@ const ConnectWalletModal = ({ isOpen, onClose }) => {
               <Button
                 size="lg"
                 onClick={async () => await connect()}
-                colorScheme="blue"
+                background={gradients.primary}
                 justifyContent="space-between"
                 rightIcon={<Image width="2em" src={metaMaskIcon} />}
               >
@@ -152,7 +153,9 @@ export const CallToActionModal = ({ isOpen, onClose }) => {
 
   const changeWallet = () => {
     context.unsetConnector()
-    requestChangeAccount()
+    Promise.all([requestChangeAccount()]).then((values) => {
+      context.setFirstValidConnector(["MetaMask"])
+    })
   }
 
   return (
@@ -167,7 +170,7 @@ export const CallToActionModal = ({ isOpen, onClose }) => {
             <Button
               size="lg"
               onClick={changeWallet}
-              colorScheme="blue"
+              colorScheme="primary"
               variant="outline"
               justifyContent="space-between"
               rightIcon={<Image width="2em" src={metaMaskIcon} />}
@@ -179,7 +182,7 @@ export const CallToActionModal = ({ isOpen, onClose }) => {
               href={"https://resource.finance/"}
               target={"_blank"}
               size="lg"
-              colorScheme="blue"
+              background={gradients.primary}
               justifyContent="space-between"
               rightIcon={<FontAwesomeIcon icon={faBookOpen} />}
             >

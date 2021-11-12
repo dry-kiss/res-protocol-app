@@ -92,7 +92,7 @@ const WalletInfoModal = ({ isOpen, onClose, address }: WalletInfoModalProps) => 
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleDisconnect}>
+          <Button colorScheme="primary" onClick={handleDisconnect}>
             Disconnect
           </Button>
         </ModalFooter>

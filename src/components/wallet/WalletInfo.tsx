@@ -37,7 +37,7 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
   return (
     <Box {...rest}>
       <HStack spacing={-14}>
-        <Tooltip label="Locked SOURCE balance" shouldWrapChildren>
+        <Tooltip label="Locked SOURCE" shouldWrapChildren>
           <Center {...pillContainerStyles} pr="60px" left={0} borderColor={colors.gray[700]}>
             <Box mx={1}>
               <Text variant="number" mx={2} id={LOCKED_REF} display="inline"></Text>
@@ -51,7 +51,7 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
             </Box>
           </Center>
         </Tooltip>
-        <Tooltip label="Total SOURCE balance" shouldWrapChildren>
+        <Tooltip label="Total SOURCE" shouldWrapChildren>
           <Center {...pillContainerStyles} right={0} borderColor="black">
             <GlyphLabel id={BALANCE_REF} mx={1} />
           </Center>

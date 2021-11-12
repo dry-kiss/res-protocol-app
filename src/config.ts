@@ -43,6 +43,7 @@ export const config = {
   NETWORK_CURRENCY_NAME: getCurrencyName(process.env.REACT_APP_NETWORK_NAME!),
   NETWORK_CURRENCY_SYMBOL: getCurrencySymbol(process.env.REACT_APP_NETWORK_NAME!),
   NETWORK_NAME: process.env.REACT_APP_NETWORK_NAME!,
+  SOURCE_ADDRESS: process.env.REACT_APP_SOURCE_ADDRESS!,
 }
 
 export default config

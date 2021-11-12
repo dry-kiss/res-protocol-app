@@ -1,21 +1,16 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import BusinessRoutes from "./pages/business/BusinessRoutes";
-import SearchBusinessesPage from "./pages/business/pages/SearchBusinessesPage";
-import HomePage from "./pages/home/pages/HomePage";
-import PortfolioRoutes from "./pages/portfolio/PortfolioRoutes";
+import React from "react"
+import { Redirect, Route, Switch } from "react-router-dom"
+import HomePage from "./pages/home/pages/HomePage"
 
 const Routes = () => {
   return (
     <>
       <Switch>
         <Route exact path="/" component={HomePage} />
-        {/* <Route path="/businesses/:handle" component={BusinessRoutes} />
-        <Route exact path="/portfolio" component={PortfolioRoutes} /> */}
         <Redirect to={{ pathname: "/" }} />
       </Switch>
     </>
-  );
-};
+  )
+}
 
-export default Routes;
+export default Routes
