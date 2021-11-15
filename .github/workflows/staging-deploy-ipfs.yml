@@ -36,8 +36,8 @@ jobs:
         env:
           REACT_APP_SUBGRAPH_URL: https://api.thegraph.com/subgraphs/name/resource-network/resource_testnet
           REACT_APP_RESOURCE_URL: https://staging-api.resourcenetwork.co/graphql
-          REACT_APP_NETWORK_NAME: celo-alfajores
-          REACT_APP_SOURCE_ADDRESS: "0x3A51FE2790f2Fc13e992fa582c63A88CB925154B"
+          REACT_APP_NETWORK_NAME: celo
+          REACT_APP_SOURCE_ADDRESS: "0xf79a3881713BFA9Fe080Ef6f2D7579Fd595F4f76"
         run: |
           export CI=false 
           yarn codegen
