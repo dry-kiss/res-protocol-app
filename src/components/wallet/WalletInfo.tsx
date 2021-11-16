@@ -33,7 +33,6 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
   })
 
   const showLock = Number(ethers.utils.formatEther(locked)) > 0
-  console.log(showLock)
 
   return (
     <Box {...rest}>
