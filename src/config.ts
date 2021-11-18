@@ -46,4 +46,6 @@ export const config = {
   SOURCE_ADDRESS: process.env.REACT_APP_SOURCE_ADDRESS!,
 }
 
+console.log(process.env.REACT_APP_SOURCE_ADDRESS)
+
 export default config
