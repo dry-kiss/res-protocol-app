@@ -21,40 +21,12 @@ yarn
 yarn start
 ```
 
-🔏 Contract deployments are stored in `packages/hardhat/deployments/<network>/<contract_name>`
+📱 dapp will be hosted at `http:localhost:3001`
 
-# 🏗 Run Contract Tests
+> Add hardhat-network to your metamask with the following:
 
-```bash
-yarn test
-```
-
-# 🤓 Details
-
-> Local graph node
-
-```bash
-yarn run-graph-node
-```
-
-> if old graph node, clean graph node
-
-```bash
-yarn clean-graph-node
-```
-
-> build and deploy the subgraph
-
-```bash
-yarn graph-prepare
-yarn graph-codegen
-yarn graph-build
-yarn graph-create-local
-yarn graph-deploy-local
-```
-
-🔏 smart contracts in `packages/hardhat/contracts`
-
-💼 Deployment scripts in `packages/hardhat/deploy`
-
-📕 Go to our home page to learn more : https://www.resourcenetwork.co/
+1. Network Name: `hardhat network`
+2. New RPC URL: `http://127.0.0.1:8545`
+3. Chain ID: `31337`
+4. Currency Symbol (Optional): `CELO`
+5. Block Explorer URL (Optional): `https://alfajores-blockscout.celo-testnet.org`
