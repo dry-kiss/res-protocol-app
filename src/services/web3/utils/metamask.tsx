@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { standaloneToast } from "../../../components/toast/createStandaloneToast"
+import { showMetaMaskNotFoundToast } from "../../../components/toast/customToasts"
 import { config } from "../../../config"
 import { CONTRACTS } from "../constants"
 
@@ -7,11 +7,7 @@ export const requestAddNetwork = async () => {
   const _window = window as any
 
   if (!_window.ethereum) {
-    standaloneToast({
-      status: "error",
-      title: "MetaMask extension not found",
-      description: "Please install MetaMask to use this app.",
-    })
+    return showMetaMaskNotFoundToast()
   }
 
   await _window.ethereum?.request({
@@ -35,6 +31,10 @@ export const requestAddNetwork = async () => {
 
 export const requestAddToken = async () => {
   const _window = window as any
+
+  if (!_window.ethereum) {
+    return showMetaMaskNotFoundToast()
+  }
 
   await _window.ethereum?.request({
     method: "wallet_watchAsset",

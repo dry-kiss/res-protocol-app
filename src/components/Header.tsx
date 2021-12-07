@@ -6,10 +6,13 @@ import useConnectWallet from "./wallet/useConnectWallet"
 import { Image } from "@chakra-ui/react"
 import { gradients } from "../theme/foundations/colors"
 import { useEffectOnce } from "react-use"
+import { RusdGlyphGradient } from "./glyph/RusdGlyph"
+import { useHistory } from "react-router"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
 export const Header = () => {
+  const history = useHistory()
   const context = useWeb3Context()
   const connectWallet = useConnectWallet()
 
@@ -18,13 +21,14 @@ export const Header = () => {
   })
 
   return (
-    <Flex justifyContent="flex-end" {...containerStyles}>
+    <Flex justifyContent="space-between" {...containerStyles}>
+      <RusdGlyphGradient
+        boxSize="36px"
+        onClick={() => history.push("/")}
+        _hover={{ cursor: "pointer" }}
+      />
       <HStack align="center" spacing={6}>
-        {context.library && (
-          <>
-            <AddressInfo />
-          </>
-        )}
+        {context.library && <AddressInfo />}
         {!context.library && (
           <Button
             size="md"
@@ -52,7 +56,8 @@ const containerStyles: StackProps = {
   borderColor: "gray.300",
   bgColor: "white !important",
   height: headerHeight,
-  position: "fixed",
+  position: "sticky",
+  top: 0,
   w: "100vw",
   zIndex: 1,
 }

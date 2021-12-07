@@ -18,15 +18,12 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { ethers } from "ethers"
-import { useEffect, useState } from "react"
-import { useWeb3Context } from "web3-react/dist/provider"
 import gateio from "../../assets/exchanges/gate-io.png"
 import pancakeswap from "../../assets/exchanges/pancakeswap.png"
 import ubeswap from "../../assets/exchanges/ubeswap.png"
 import source from "../../assets/glyphs/source.svg"
 import useConnectWallet from "../../components/wallet/useConnectWallet"
-import { useReSourceTokenContract } from "../../services/web3/contracts"
+import { useLockedSourceBalance } from "../../services/web3/contracts/sourceToken"
 import { requestAddToken } from "../../services/web3/utils/metamask"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
@@ -52,24 +49,18 @@ export const ConnectWallet = () => {
 }
 
 export const ClaimSourceTokens = () => {
-  const { account } = useWeb3Context()
-  const [tokenBalance, setTokenBalance] = useState(ethers.BigNumber.from(0))
-  const { balanceOf, claimTokens } = useReSourceTokenContract()
-
-  useEffect(() => {
-    // if (account) balanceOf().then(setTokenBalance)
-  }, [account, balanceOf])
+  const lockedSourceBalance = useLockedSourceBalance()
 
   return (
     <VStack align="flex-start" w="full">
-      <Heading>You have {tokenBalance.toString()} tokens to claim</Heading>
-      {tokenBalance && (
+      <Heading>You have {lockedSourceBalance.toString()} tokens to claim</Heading>
+      {lockedSourceBalance && (
         <Button
           w="full"
           maxW="300px"
           variant="primary"
           colorScheme="primary"
-          onClick={claimTokens}
+          // onClick={claimTokens}
           justifyContent="space-between"
           rightIcon={<Image width="1.5em" src={source} />}
         >
@@ -116,7 +107,6 @@ export const WhereToBuy = () => {
   return (
     <VStack align="flex-start">
       <Heading>Where to buy</Heading>
-
       <Text variant="caption" maxW="200px">
         SOURCE can be traded on these exchanges
       </Text>
@@ -143,11 +133,11 @@ export const WhereToBuy = () => {
 
 export const IconList = () => {
   return (
-    <VStack align="flex-start" spacing={4}>
+    <>
       <Text
         as="a"
         target="_blank"
-        color="purple.main"
+        color="purple.dark"
         href={"https://resource.finance/"}
         _hover={{ textDecoration: "underline" }}
       >
@@ -191,7 +181,7 @@ export const IconList = () => {
           icon={<FontAwesomeIcon icon={faMedium} />}
         />
       </Wrap>
-    </VStack>
+    </>
   )
 }
 

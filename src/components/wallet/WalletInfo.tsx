@@ -4,7 +4,7 @@ import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
-import { useReSourceTokenContract } from "../../services/web3/contracts"
+import { useSourceTokenContract } from "../../services/web3/contracts/sourceToken"
 import colors from "../../theme/foundations/colors"
 import { useManagedCountUp } from "../../utils/useManagedCountUp"
 import { GlyphLabel } from "../glyph/SourceGlyphLabel"
@@ -15,7 +15,7 @@ const LOCKED_REF = "LOCKED_REF"
 const WalletInfo = ({ ...rest }: BoxProps) => {
   const [balance, setBalance] = useState(ethers.BigNumber.from(0))
   const [locked, setLocked] = useState(ethers.BigNumber.from(0))
-  const { balanceOf, lockedBalanceOf } = useReSourceTokenContract()
+  const { balanceOf, lockedBalanceOf } = useSourceTokenContract()
 
   useEffect(() => {
     balanceOf().then(setBalance)

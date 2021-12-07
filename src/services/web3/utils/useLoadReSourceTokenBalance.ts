@@ -1,9 +1,9 @@
 import { BigNumber, ethers } from "ethers"
 import { useEffect, useState } from "react"
 import { useWeb3Context } from "web3-react"
-import { getReSourceTokenContract } from "../contracts/reSourceToken"
+import { getSourceTokenContract } from "../contracts/sourceToken"
 
-export const useLoadReSourceTokenBalance = () => {
+export const useLoadSourceTokenBalance = () => {
   const context = useWeb3Context()
   const [sourceBalance, setSourceBalance] = useState<BigNumber>()
 
@@ -12,7 +12,7 @@ export const useLoadReSourceTokenBalance = () => {
       if (context.account) {
         const provider = new ethers.providers.Web3Provider(context.library.provider)
         const signer = provider.getSigner()
-        const contract = getReSourceTokenContract(provider)
+        const contract = getSourceTokenContract(provider)
         const address = context.account
         const balance = await contract.connect(signer).balanceOf(address)
         setSourceBalance(balance)
