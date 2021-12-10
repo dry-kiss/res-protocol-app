@@ -8475,6 +8475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chart.js@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "chart.js@npm:3.6.2"
+  checksum: 0883adced890eb0ee77a8374e6f89412a82df694f25767a5b14a200735922adf6521366a1419a24025e53203ea00ed70ba1dfc86e2f030c9ef183c6909f9dbdd
+  languageName: node
+  linkType: hard
+
 "check-types@npm:^11.1.1":
   version: 11.1.2
   resolution: "check-types@npm:11.1.2"
@@ -11915,6 +11922,13 @@ __metadata:
   dependencies:
     checkpoint-store: ^1.1.0
   checksum: 8f9fe05bb5beabb31e4fbb8d2cfe83cfb36fd9f6ba78193dea8fab7a679470d45bb04c6f052d4f79da03e81129c5b5bed528902430184e1e11b4959f397019ac
+  languageName: node
+  linkType: hard
+
+"faker@npm:^5.5.3":
+  version: 5.5.3
+  resolution: "faker@npm:5.5.3"
+  checksum: 684fd64c8d3897e54248f95b4f6319f75d97691b8500cd13adf4af2c28f9204f766c1d1aaa6b41338f0beaaa87256c3132f8708a1a8f189d122b92f6b98081c3
   languageName: node
   linkType: hard
 
@@ -19936,6 +19950,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-chartjs-2@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "react-chartjs-2@npm:4.0.0"
+  peerDependencies:
+    chart.js: ^3.5.0
+    react: ^16.8.0 || ^17.0.0
+  checksum: 25998a4cc14910641c1184245c6672211d436877a456c70fa16bf67e2b470e7899cef578618fd8842a7d25103a973f25c7f7ec01200fdcbe1b04913fabb87650
+  languageName: node
+  linkType: hard
+
 "react-clientside-effect@npm:^1.2.2":
   version: 1.2.5
   resolution: "react-clientside-effect@npm:1.2.5"
@@ -21934,13 +21958,16 @@ __metadata:
     "@types/react-dom": ^17.0.0
     "@types/react-router-dom": ^5.1.8
     "@types/react-table": ^7.7.2
+    chart.js: ^3.6.2
     dayjs: ^1.10.6
     ethers: ^5.4.5
+    faker: ^5.5.3
     formik: ^2.2.9
     framer-motion: ^4
     graphql: ^14.0.2
     node-sass: ^6.0.1
     react: ^17.0.2
+    react-chartjs-2: ^4.0.0
     react-countup: ^5.2.0
     react-dom: ^17.0.2
     react-js-pagination: ^3.0.3
