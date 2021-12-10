@@ -44,6 +44,7 @@ export const config = {
   NETWORK_CURRENCY_SYMBOL: getCurrencySymbol(process.env.REACT_APP_NETWORK_NAME!),
   NETWORK_NAME: process.env.REACT_APP_NETWORK_NAME!,
   SOURCE_ADDRESS: process.env.REACT_APP_SOURCE_ADDRESS!,
+  CLAIM_ADDRESS: process.env.REACT_APP_CLAIM_ADDRESS!,
 }
 
 console.log(process.env.REACT_APP_SOURCE_ADDRESS)

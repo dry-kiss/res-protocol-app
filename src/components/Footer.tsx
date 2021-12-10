@@ -4,23 +4,26 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons"
 import React, { useEffect, useState } from "react"
 import { useWeb3Context } from "web3-react"
 import colors from "../theme/foundations/colors"
+import { onlyDesktop } from "../theme/utils/display"
 import Icon from "./Icon"
 
 const Footer = ({ ...rest }: BoxProps) => {
   const active = useWeb3Context().active
-  const [label, setLabel] = useState("Disconnected")
-  const [iconColor, setIconColor] = useState("Disconnected")
+  const [label, setLabel] = useState("Not connected")
+  const [iconColor, setIconColor] = useState("Not connected")
 
   useEffect(() => {
-    setLabel(active ? "Live" : "Disconnected")
+    setLabel(active ? "Live" : "Not connected")
     setIconColor(active ? colors.green.main : colors.gray.cement)
   }, [active])
 
   return (
     <Flex {...footerStyles} {...rest}>
       <HStack>
-        <Text>ReSource Network</Text>
-        <Text color="gray.500">SOURCE dApp</Text>
+        <Text>ReSource Protocol</Text>
+        <Text display={onlyDesktop} color="gray.500">
+          SOURCE dApp
+        </Text>
       </HStack>
       <HStack>
         <Text>{label}</Text>

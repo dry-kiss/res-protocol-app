@@ -1,5 +1,6 @@
-import { BigNumberish } from "@ethersproject/bignumber"
+import { BigNumberish, BigNumber } from "@ethersproject/bignumber"
 import { ethers } from "ethers"
+import { useState } from "react"
 
 const { formatUnits, parseUnits } = ethers.utils
 
@@ -34,3 +35,5 @@ export const parseEther = (value?: string | BigNumberish) => {
     return ethers.BigNumber.from(0)
   }
 }
+
+export const useBigNumberState = (val?: string | BigNumberish) => useState(BigNumber.from(val ?? 0))
