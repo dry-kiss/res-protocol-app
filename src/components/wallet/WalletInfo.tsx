@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
 import {
+  Lock,
+  useGetLockSchedules,
   useLockedSourceBalance,
   useSourceBalance,
   useSourceTokenContract,
@@ -34,11 +36,11 @@ import {
   LineElement,
   Title,
   Legend,
+  Filler,
 } from "chart.js"
-import faker from "faker"
 import { Line } from "react-chartjs-2"
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Legend)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Legend, Filler)
 
 const BALANCE_REF = "BALANCE_REF"
 const LOCKED_REF = "LOCKED_REF"
@@ -46,10 +48,14 @@ const LOCKED_REF = "LOCKED_REF"
 const WalletInfo = ({ ...rest }: BoxProps) => {
   const balance = useSourceBalance()
   const locked = useLockedSourceBalance()
+  const lockSchedules = useGetLockSchedules()
   const { onOpen, onClose, isOpen } = useDisclosure()
 
   const device = useBreakpointValue({ base: "mobile", md: "desktop" })
   const isMobile = device === "mobile"
+
+  console.log(Number(ethers.utils.formatEther(balance)))
+  console.log(Number(ethers.utils.formatEther(locked)))
 
   useManagedCountUp({
     ref: BALANCE_REF,
@@ -61,22 +67,19 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
     end: Number(formatEther(locked)),
   })
 
-  const labels = ["January", "February", "March", "April", "May", "June", "July"]
+  const formattedSchedules = formatSchedules(lockSchedules as Lock[], balance)
+
+  const labels = Object.keys(formattedSchedules)
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Dataset 2",
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Unlock Schedule",
+        data: labels.map((label) => formattedSchedules[label]),
+        fill: true,
+        borderColor: colors.primary.dark,
+        backgroundColor: colors.primary.softTransparent,
       },
     ],
   }
@@ -85,11 +88,10 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        display: false,
       },
       title: {
-        display: true,
-        text: "Chart.js Line Chart",
+        display: false,
       },
     },
   }
@@ -100,15 +102,8 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
     <Box {...rest}>
       <HStack spacing={-14} whiteSpace="nowrap">
         <HStack display={showLock ? "" : "none"}>
-          <Popover
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            // placement="left"
-            closeOnBlur={false}
-          >
+          <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} closeOnBlur={false}>
             <PopoverTrigger>
-              {/* <Tooltip display={showLock ? "" : "none"} label="Locked SOURCE" shouldWrapChildren> */}
               <Center
                 display={showLock ? "" : "none"}
                 {...pillContainerStyles}
@@ -116,12 +111,11 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
                 left={0}
                 borderColor={colors.gray[700]}
               >
-                <Box _hover={{ cursor: "pointer" }} mx={1} onClick={onOpen}>
+                <Box _hover={{ cursor: "pointer" }} mx={1}>
                   <Text id={LOCKED_REF} variant="number" mx={2} display="inline" />
                   <FontAwesomeIcon icon={faLock} size="sm" color={colors.gray[700]} />
                 </Box>
               </Center>
-              {/* </Tooltip> */}
             </PopoverTrigger>
             <PopoverContent
               center
@@ -155,6 +149,26 @@ const pillContainerStyles: BoxProps = {
   border: "1px solid",
   py: 1,
   px: 2,
+}
+
+const formatSchedules = (lockSchedules: Lock[], balance: ethers.BigNumber) => {
+  if (!lockSchedules || lockSchedules?.length === 0) return []
+  const now = new Date().toDateString()
+  let curBalance = Number(ethers.utils.formatEther(balance))
+  let dates = {}
+  dates[now] = curBalance
+  for (var schedule of lockSchedules) {
+    const date = new Date(
+      Number(ethers.utils.formatUnits(schedule.expirationBlock, "wei")) * 1000,
+    ).toDateString()
+    curBalance += Number(ethers.utils.formatEther(schedule.amount))
+    if (!dates[date]) {
+      dates[date] = curBalance
+    } else {
+      dates[date] += Number(ethers.utils.formatEther(schedule.amount))
+    }
+  }
+  return dates
 }
 
 export default React.memo(WalletInfo)
