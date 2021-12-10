@@ -18,13 +18,18 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { ethers } from "ethers"
+import { useState } from "react"
+import { useRecoilState, useSetRecoilState } from "recoil"
 import gateio from "../../assets/exchanges/gate-io.png"
 import pancakeswap from "../../assets/exchanges/pancakeswap.png"
 import ubeswap from "../../assets/exchanges/ubeswap.png"
 import source from "../../assets/glyphs/source.svg"
 import useConnectWallet from "../../components/wallet/useConnectWallet"
 import { useLockedSourceBalance } from "../../services/web3/contracts/sourceToken"
+import { useClaim, useGetClaimTotal } from "../../services/web3/contracts/tokenClaim"
 import { requestAddToken } from "../../services/web3/utils/metamask"
+import { refetchContractsAtom } from "../../utils/useRefetchData"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
@@ -49,18 +54,36 @@ export const ConnectWallet = () => {
 }
 
 export const ClaimSourceTokens = () => {
-  const lockedSourceBalance = useLockedSourceBalance()
+  const [loading, setLoading] = useState(false)
+  const setRefetch = useSetRecoilState(refetchContractsAtom)
+
+  const claimTotal = useGetClaimTotal()
+  const claim = useClaim()
+  const hasClaim = Number(claimTotal.toString()) > 0
+
+  const claimTokens = async () => {
+    const tx = await claim()
+    if (tx) {
+      setLoading(true)
+      await tx.wait()
+      setLoading(false)
+      setRefetch(["SourceToken"])
+    }
+  }
+
+  if (!hasClaim) return <></>
 
   return (
     <VStack align="flex-start" w="full">
-      <Heading>You have {lockedSourceBalance.toString()} tokens to claim</Heading>
-      {lockedSourceBalance && (
+      <Heading>You have {ethers.utils.formatEther(claimTotal)} SOURCE to claim</Heading>
+      {claimTotal && (
         <Button
           w="full"
           maxW="300px"
           variant="primary"
           colorScheme="primary"
-          // onClick={claimTokens}
+          onClick={async () => await claimTokens()}
+          isLoading={loading}
           justifyContent="space-between"
           rightIcon={<Image width="1.5em" src={source} />}
         >

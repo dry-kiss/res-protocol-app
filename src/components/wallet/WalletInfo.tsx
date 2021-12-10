@@ -4,7 +4,12 @@ import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
-import { useSourceTokenContract } from "../../services/web3/contracts/sourceToken"
+import {
+  useLockedSourceBalance,
+  useSourceBalance,
+  useSourceTokenContract,
+} from "../../services/web3/contracts/sourceToken"
+import { formatEther } from "../../services/web3/utils/ethers"
 import colors from "../../theme/foundations/colors"
 import { useManagedCountUp } from "../../utils/useManagedCountUp"
 import { GlyphLabel } from "../glyph/SourceGlyphLabel"
@@ -13,14 +18,8 @@ const BALANCE_REF = "BALANCE_REF"
 const LOCKED_REF = "LOCKED_REF"
 
 const WalletInfo = ({ ...rest }: BoxProps) => {
-  const [balance, setBalance] = useState(ethers.BigNumber.from(0))
-  const [locked, setLocked] = useState(ethers.BigNumber.from(0))
-  const { balanceOf, lockedBalanceOf } = useSourceTokenContract()
-
-  useEffect(() => {
-    balanceOf().then(setBalance)
-    lockedBalanceOf().then(setLocked)
-  }, [])
+  const balance = useSourceBalance()
+  const locked = useLockedSourceBalance()
 
   useManagedCountUp({
     ref: BALANCE_REF,
@@ -29,10 +28,10 @@ const WalletInfo = ({ ...rest }: BoxProps) => {
 
   useManagedCountUp({
     ref: LOCKED_REF,
-    end: Number(ethers.utils.formatEther(locked)),
+    end: Number(formatEther(locked)),
   })
 
-  const showLock = Number(ethers.utils.formatEther(locked)) > 0
+  const showLock = Number(formatEther(locked)) > 0
 
   return (
     <Box {...rest}>

@@ -6,6 +6,8 @@ import { showConnectWalletToast } from "../../../components/toast/customToasts"
 import { CONTRACTS } from "../constants"
 import { SourceToken, SourceToken__factory } from "../types"
 import { useGetEthersProviderAndSigner } from "../utils/useGetEthersProviderAndSigner"
+import { useRecoilState } from "recoil"
+import { refetchContractsAtom } from "../../../utils/useRefetchData"
 
 export const useSourceTokenContract = () => {
   const { provider, signer } = useGetEthersProviderAndSigner()
@@ -29,25 +31,41 @@ export const useSourceTokenContract = () => {
 }
 
 export const useLockedSourceBalance = () => {
+  const [refetch, setRefetch] = useRecoilState(refetchContractsAtom)
   const [lockedSourceBalance, setLockedSourceBalance] = useBigNumberState()
   const { lockedBalanceOf } = useSourceTokenContract()
   const { account } = useWeb3Context()
 
   useEffect(() => {
+    if (account && refetch.indexOf("SourceToken") !== -1) {
+      lockedBalanceOf().then(setLockedSourceBalance)
+      setRefetch(refetch.filter((val) => val !== "SourceToken"))
+    }
+  }, [refetch, account])
+
+  useEffect(() => {
     if (account) lockedBalanceOf().then(setLockedSourceBalance)
-  }, [account, lockedBalanceOf, setLockedSourceBalance])
+  }, [account])
 
   return lockedSourceBalance
 }
 
 export const useSourceBalance = () => {
+  const [refetch, setRefetch] = useRecoilState(refetchContractsAtom)
   const [sourceBalance, setSourceBalance] = useBigNumberState()
   const { balanceOf } = useSourceTokenContract()
   const { account } = useWeb3Context()
 
   useEffect(() => {
+    if (account && refetch.indexOf("SourceToken") !== -1) {
+      balanceOf().then(setSourceBalance)
+      setRefetch(refetch.filter((val) => val !== "SourceToken"))
+    }
+  }, [refetch, account])
+
+  useEffect(() => {
     if (account) balanceOf().then(setSourceBalance)
-  }, [account, balanceOf, setSourceBalance])
+  }, [account])
 
   return sourceBalance
 }

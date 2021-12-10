@@ -8,6 +8,7 @@ import { gradients } from "../theme/foundations/colors"
 import { useEffectOnce } from "react-use"
 import { RusdGlyphGradient } from "./glyph/RusdGlyph"
 import { useHistory } from "react-router"
+import WalletInfo from "./wallet/WalletInfo"
 
 const metaMaskIcon = "https://cdn.iconscout.com/icon/free/png-256/metamask-2728406-2261817.png"
 
@@ -28,7 +29,12 @@ export const Header = () => {
         _hover={{ cursor: "pointer" }}
       />
       <HStack align="center" spacing={6}>
-        {context.library && <AddressInfo />}
+        {context.library && (
+          <>
+            <WalletInfo />
+            <AddressInfo />
+          </>
+        )}
         {!context.library && (
           <Button
             size="md"
