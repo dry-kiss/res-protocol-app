@@ -5,6 +5,7 @@ const purple = {
   soft: "#EAE5FC",
   variantSoft: "#E3DFFC",
   softTransparent: "rgba(234, 229, 252, 0.25)",
+  lightTransparent: "rgba(183, 156, 237, 0.5)",
 }
 
 const orange = {
