@@ -1,8 +1,5 @@
-import { Box, BoxProps, HStack } from "@chakra-ui/layout"
-import { Image } from "@chakra-ui/react"
-
+import { Box, BoxProps } from "@chakra-ui/layout"
 import { ethers } from "ethers"
-import React, { useEffect, useState } from "react"
 import {
   Lock,
   useGetLockSchedules,
@@ -58,6 +55,9 @@ const UnlockScheduleGraph = ({ ...rest }: BoxProps) => {
         display: false,
       },
       title: {
+        // text: "Unlock Schedule",
+        // fullSize: true,
+        // display: true,
         display: false,
       },
     },
@@ -74,6 +74,7 @@ const UnlockScheduleGraph = ({ ...rest }: BoxProps) => {
         backgroundPosition="center"
         backgroundSize="50%"
         alignItems="center"
+        w="full"
       >
         <Line options={options} data={data} />
       </Box>

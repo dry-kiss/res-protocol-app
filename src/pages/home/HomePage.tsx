@@ -1,10 +1,11 @@
-import { Container, Flex, HStack, VStack } from "@chakra-ui/layout"
-import { Heading, Image, useBreakpointValue } from "@chakra-ui/react"
+import { Box, Container, Flex, HStack, VStack } from "@chakra-ui/layout"
+import { CloseButton, Heading, Image, useBreakpointValue } from "@chakra-ui/react"
 import { useRecoilState } from "recoil"
 import { useWeb3Context } from "web3-react/dist/provider"
 import homeImage from "../../assets/home.svg"
 import UnlockScheduleGraph from "../../components/wallet/UnlockScheduleGraph"
 import { walletInfoAtom } from "../../components/wallet/WalletInfo"
+import colors from "../../theme/foundations/colors"
 import { onlyDesktop } from "../../theme/utils/display"
 import {
   ClaimSourceTokens,
@@ -50,7 +51,19 @@ const HomePage = () => {
             <IconList />
           </VStack>
           {graphToggle ? (
-            <UnlockScheduleGraph w="full" display={onlyDesktop} />
+            <Box
+              w="full"
+              borderRadius="2xl"
+              border="1px solid"
+              borderColor={colors.gray.cement}
+              padding=".5em"
+            >
+              <HStack justifyContent="space-between" mt=".5em">
+                <Heading ml="1em">Unlock Schedules</Heading>
+                <CloseButton onClick={() => setToggleSchedule(false)} />
+              </HStack>
+              <UnlockScheduleGraph padding="1em" display={onlyDesktop} />
+            </Box>
           ) : (
             <Image display={onlyDesktop} src={homeImage} w="full" />
           )}
