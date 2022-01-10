@@ -1,8 +1,19 @@
-![ReSource](https://uploads-ssl.webflow.com/6016a148b166393bb61de601/60942413b02410890b73c2b6_resource-logotype.svg)
+# DApp for exchanging tokens
 
-# 🏄‍♂️ Quick Start Local
+Uses Resource Protocol and allows you to exchange tokens and manage wallets
 
-> install dependancies
+## Tech stack
+
+- React
+- TypeScript
+- Hardhat
+- Web3.js
+- GraphQL
+- Apollo
+
+## How to start app
+
+> install dependencies
 
 ```bash
 yarn
